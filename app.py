@@ -126,21 +126,21 @@ def main():
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
                 # Bounding box calculation
-                brect = calc_bounding_rect(debug_image, hand_landmarks)
+                brect = calc_bounding_rect(debug_image, hand_landmarks) # Create the Rectangle
                 # Landmark calculation
-                landmark_list = calc_landmark_list(debug_image, hand_landmarks)
+                landmark_list = calc_landmark_list(debug_image, hand_landmarks) # Identify the points of the hand
 
                 # Conversion to relative coordinates / normalized coordinates
                 pre_processed_landmark_list = pre_process_landmark(
-                    landmark_list)
+                    landmark_list) # Stroable value for the csv file
                 pre_processed_point_history_list = pre_process_point_history(
-                    debug_image, point_history)
+                    debug_image, point_history) # checks for the new symbol
                 # Write to the dataset file
                 logging_csv(number, mode, pre_processed_landmark_list,
-                            pre_processed_point_history_list)
+                            pre_processed_point_history_list) # save the new points with the values
 
                 # Hand sign classification
-                hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
+                hand_sign_id = keypoint_classifier(pre_processed_landmark_list) # Identify the value for the gesture
                 if hand_sign_id == 2:  # Point gesture
                     point_history.append(landmark_list[8])
                 else:
@@ -224,7 +224,7 @@ def calc_landmark_list(image, landmarks):
         # landmark_z = landmark.z
 
         landmark_point.append([landmark_x, landmark_y])
-
+        # print(landmark_point)
     return landmark_point
 
 
@@ -251,7 +251,7 @@ def pre_process_landmark(landmark_list):
         return n / max_value
 
     temp_landmark_list = list(map(normalize_, temp_landmark_list))
-
+    # print(temp_landmark_list)
     return temp_landmark_list
 
 
@@ -274,7 +274,7 @@ def pre_process_point_history(image, point_history):
     # Convert to a one-dimensional list
     temp_point_history = list(
         itertools.chain.from_iterable(temp_point_history))
-
+    # print(temp_point_history)
     return temp_point_history
 
 
@@ -478,7 +478,7 @@ def draw_landmarks(image, landmark_point):
             cv.circle(image, (landmark[0], landmark[1]), 8, (255, 255, 255),
                       -1)
             cv.circle(image, (landmark[0], landmark[1]), 8, (0, 0, 0), 1)
-
+    # print(image)
     return image
 
 
